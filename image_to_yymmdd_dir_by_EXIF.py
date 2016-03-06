@@ -9,9 +9,14 @@ user_name = os.getlogin()
 src_dir = "/Users/" + user_name + "/Desktop/image/"
 # create dst_dir/yyyymmdd/
 dst_dir = "/Users/" + user_name + "/Desktop/dst_dir/"
+# create dst_dir/nodate/
+no_date_dst_dir = dst_dir + "nodate/"
 
 if os.path.exists(dst_dir) == False:
     os.mkdir(dst_dir)
+
+if os.path.exists(no_date_dst_dir) == False:
+    os.mkdir(no_date_dst_dir)
 
 for root, dirs, files in os.walk(src_dir):
     for filename in files:
@@ -28,4 +33,7 @@ for root, dirs, files in os.walk(src_dir):
                 shutil.copy2(src_dir + filename, dst)
         except Exception as e:
             # .DS_Store must Die
-            print filename + ' is fail.'
+            print filename + ' is No DateTimeOriginal. Move ' + no_date_dst_dir
+            dst = os.path.join(no_date_dst_dir, filename)
+            if os.path.exists(dst) == False:
+                shutil.copy2(src_dir + filename, no_date_dst_dir)
